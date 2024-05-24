@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chatbot</title>
+</head>
+<body>
+    <h1>Chatbot</h1>
+    <form method="post">
+        {% csrf_token %}
+        <input type="text" name="question" placeholder="Ask a question">
+        <button type="submit">Submit</button>
+    </form>
+    {% if answer %}
+        <p>Answer: {{ answer }}</p>
+    {% elif suggestions %}
+        <p>Did you mean:</p>
+        <ul>
+            {% for suggestion in suggestions %}
+                <li>{{ suggestion }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+</body>
+</html>

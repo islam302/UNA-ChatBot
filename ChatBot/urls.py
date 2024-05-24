@@ -16,7 +16,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from Homepage.views import upload_file, chatbot_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('upload/', upload_file, name='upload_file'),
+    path('chatbot/', chatbot_view, name='chatbot_view'),
 ]
+
