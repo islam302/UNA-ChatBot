@@ -1,67 +1,65 @@
-from django.shortcuts import render, redirect
-from .forms import UploadFileForm
-from .models import QuestionAnswer
-import fitz
-from fuzzywuzzy import process
 import pandas as pd
+from django.shortcuts import render
+from .models import UploadFile, FAQ
+from django.db.models import Q
+from difflib import SequenceMatcher
 
-def extract_text_from_pdf(file):
-    doc = fitz.open(file)
-    text = ""
-    for page in doc:
-        text += page.get_text()
-    return text
 
-def parse_text_to_qa(text):
-    lines = text.split("\n")
-    questions, answers = [], []
-    for line in lines:
-        if line.startswith("Q:"):
-            questions.append(line[2:].strip())
-        elif line.startswith("A:"):
-            answers.append(line[2:].strip())
-    return zip(questions, answers)
-
-def upload_excel_data(file_path):
-    # Read Excel file
-    df = pd.read_excel(file_path)
-
-    # Convert data to Python lists
-    qa_pairs = df.to_dict(orient='records')
-
-    # Use lists to create QuestionAnswer records
-    for qa_pair in qa_pairs:
-        question = qa_pair.get('question', '')
-        answer = qa_pair.get('answer', '')
-        if question and answer:
-            QuestionAnswer.objects.create(question=question, answer=answer)
-
-def upload_file(request):
-    if request.method == "POST":
+def upload_file_view(request):
+    if request.method == 'POST':
         form = UploadFileForm(request.POST, request.FILES)
         if form.is_valid():
-            file = request.FILES['file']
-            if file.name.endswith('.pdf'):
-                text = extract_text_from_pdf(file)
-                qa_pairs = parse_text_to_qa(text)
-                for question, answer in qa_pairs:
-                    QuestionAnswer.objects.create(question=question, answer=answer)
-            elif file.name.endswith('.xlsx'):
-                upload_excel_data(file)
-            return redirect('admin:index')
+            uploaded_file = form.cleaned_data['file']
+            fs = FileSystemStorage()
+            filename = fs.save(uploaded_file.name, uploaded_file)
+
+            try:
+                processed_data = save_excel_to_db(fs.path(filename))
+                if processed_data:
+                    return render(request, 'upload.html', {'form': form, 'processed_data': processed_data})
+                else:
+                    return render(request, 'upload.html', {'form': form, 'error': 'Failed to process the file.'})
+            except Exception as e:
+                print(f"Error processing file: {e}")
+                return render(request, 'upload.html', {'form': form, 'error': 'Failed to process the file.'})
     else:
         form = UploadFileForm()
     return render(request, 'upload.html', {'form': form})
 
-def chatbot_view(request):
-    if request.method == "POST":
-        user_question = request.POST.get('question')
-        best_match, score = process.extractOne(user_question, QuestionAnswer.objects.values_list('question', flat=True))
-        if score > 80:
-            answer = QuestionAnswer.objects.get(question=best_match).answer
-            return render(request, 'chatbot.html', {'answer': answer})
+def get_answer(request):
+    if request.method == 'POST':
+        question = request.POST.get('question', '')
+
+        all_questions = UploadFile.objects.values_list('question', flat=True)
+        all_answers = UploadFile.objects.values_list('answer', flat=True)
+
+        best_match_index = -1
+        best_match_score = -1
+        for i, db_question in enumerate(all_questions):
+            similarity_score = SequenceMatcher(None, question.lower(), db_question.lower()).ratio()
+            if similarity_score > best_match_score:
+                best_match_score = similarity_score
+                best_match_index = i
+
+        if best_match_score >= 0.7:
+            answer = all_answers[best_match_index]
         else:
-            suggestions = process.extract(user_question, QuestionAnswer.objects.values_list('question', flat=True), limit=3)
-            suggestions = [s[0] for s in suggestions]
-            return render(request, 'chatbot.html', {'suggestions': suggestions})
-    return render(request, 'chatbot.html')
+            answer = "Sorry, I couldn't find an answer to that question."
+
+        return render(request, 'answer.html', {'question': question, 'answer': answer})
+    else:
+        return render(request, 'answer.html', {'error': 'Invalid request method.'})
+
+def answer_question(request):
+    if request.method == 'POST':
+        user_question = request.POST.get('question', '')
+        similar_questions = FAQ.objects.filter(
+            Q(question__icontains=user_question) | Q(answer__icontains=user_question)
+        )
+        answers = [faq.answer for faq in similar_questions]
+        if answers:
+            return render(request, 'answer.html', {'answers': answers})
+        else:
+            return render(request, 'answer.html', {'answers': ['No answer found.']})
+    else:
+        return render(request, 'answer.html')
