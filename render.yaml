@@ -1,20 +1,20 @@
 databases:
-  - name: postgresql
+  - name: mysitedb
     plan: free
-    databaseName: Chatbot
-    user: postgres
+    databaseName: mysite
+    user: mysite
 
 services:
   - type: web
     plan: free
-    name: ChatBot
+    name: mysite
     runtime: python
     buildCommand: "./build.sh"
     startCommand: "python -m gunicorn ChatBot.asgi:application -k uvicorn.workers.UvicornWorker"
     envVars:
       - key: DATABASE_URL
         fromDatabase:
-          name: Chatbot
+          name: mysitedb
           property: connectionString
       - key: SECRET_KEY
         generateValue: true
