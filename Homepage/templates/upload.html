@@ -89,5 +89,23 @@
         </tbody>
     </table>
     {% endif %}
+
+    <h2>All Data from Database</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Question</th>
+                <th>Answer</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in all_data %}
+            <tr>
+                <td>{{ item.question }}</td>
+                <td>{{ item.answer }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 </body>
 </html>

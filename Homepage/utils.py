@@ -1,20 +1,28 @@
-import pandas as pd
-from .models import UploadFile
+import openpyxl
+from .models import QuestionAnswer
 
 
-def save_excel_to_db(file_path):
-    try:
-        df = pd.read_excel(file_path)
-        processed_data = []
+def save_excel_to_db(uploaded_file):
+    wb = openpyxl.load_workbook(uploaded_file)
+    sheet = wb.active
 
-        for _, row in df.iterrows():
-            question = row['question']
-            answer = row['answer']
-            UploadFile.objects.create(question=question, answer=answer)
-            processed_data.append({'question': question, 'answer': answer})
+    # Find the indices for the "Question" and "Answer" columns
+    header = {cell.value: idx for idx, cell in enumerate(sheet[1])}
+    question_col = header.get('question')
+    answer_col = header.get('answer')
 
-        return processed_data
-    except Exception as e:
-        print(f"Error processing file: {e}")
-        return None
+    if question_col is None or answer_col is None:
+        raise ValueError("Excel file must contain 'question' and 'answer' columns")
 
+    processed_data = []
+    for row in sheet.iter_rows(min_row=2, values_only=True):  # ???? ?? ???? ?????? ?????? ????????
+        question = row[question_col]
+        answer = row[answer_col]
+        if question and answer:  # ???? ?? ??? ???? ????? ?????
+            # ?????? ?? ???? ?????? ???????? ?? ????? ????????
+            if not QuestionAnswer.objects.filter(question=question, answer=answer).exists():
+                question_answer = QuestionAnswer(question=question, answer=answer)
+                question_answer.save()
+                processed_data.append({'question': question, 'answer': answer})
+    wb.close()
+    return processed_data
