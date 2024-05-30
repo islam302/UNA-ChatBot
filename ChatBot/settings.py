@@ -27,7 +27,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-+vq_bly5yrxfe7twlgt&!d1$5tw6+zhwh*1h7mznm=vz8!jqml')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -79,26 +79,26 @@ WSGI_APPLICATION = 'ChatBot.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'Chatbot',
-        'USER': 'postgres',
-        'PASSWORD': 'civil hacker',
-        'HOST': 'localhost',
-        'PORT': '7070',
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'Chatbot',
+#         'USER': 'postgres',
+#         'PASSWORD': 'civil hacker',
+#         'HOST': 'localhost',
+#         'PORT': '7070',
+#     }
+# }
 
 
 # Replace the SQLite DATABASES configuration with PostgreSQL:
-# DATABASES = {
-#     'default': dj_database_url.config(
-#         # Replace this value with your local database's connection string.
-#         default='postgresql://postgres:civil hacker@localhost:7070/Chatbot',
-#         conn_max_age=600
-#     )
-# }
+DATABASES = {
+    'default': dj_database_url.config(
+        # Replace this value with your local database's connection string.
+        default='postgresql://postgres:civil hacker@localhost:7070/Chatbot',
+        conn_max_age=600
+    )
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
