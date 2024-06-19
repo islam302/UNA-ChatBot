@@ -1,12 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Chatbot</title>
+    <title>Ask a Question</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-repeat: no-repeat;
-            background-size: cover;
+            background-color: #f7f7f7;
             margin: 0;
             padding: 0;
         }
@@ -21,10 +20,10 @@
         }
         input[type="text"] {
             padding: 10px;
-            width: 300px;
             border: 1px solid #ccc;
             border-radius: 5px;
             font-size: 16px;
+            margin-right: 10px;
         }
         button {
             padding: 10px 20px;
@@ -38,50 +37,31 @@
         button:hover {
             background-color: #45a049;
         }
-        p {
+        .answer {
             margin-top: 20px;
             text-align: center;
-        }
-        ul {
-            list-style-type: none;
-            padding: 0;
-            text-align: center;
-        }
-        li {
-            display: inline-block;
-            margin-right: 10px;
-            background-color: #f0f0f0;
-            padding: 5px 10px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        li:hover {
-            background-color: #e0e0e0;
-        }
-        .logo {
-            display: block;
-            margin: 0 auto;
-            margin-top: 20px;
-            width: 150px;
+            font-size: 18px;
         }
     </style>
 </head>
 <body>
-    <h1>Chatbot</h1>
+    <h1>Ask a Question</h1>
     <form method="post">
         {% csrf_token %}
-        <input type="text" name="question" placeholder="Ask a question">
+        {{ form.as_p }}
         <button type="submit">Submit</button>
     </form>
+
+    {% if question %}
+    <div class="answer">
+        <strong>Your question:</strong> {{ question }}
+    </div>
+    {% endif %}
+
     {% if answer %}
-        <p>Answer: {{ answer }}</p>
-    {% elif suggestions %}
-        <p>Did you mean:</p>
-        <ul>
-            {% for suggestion in suggestions %}
-                <li>{{ suggestion }}</li>
-            {% endfor %}
-        </ul>
+    <div class="answer">
+        <strong>Answer:</strong> {{ answer }}
+    </div>
     {% endif %}
 </body>
 </html>
