@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        #chatbox {
+            width: 50%;
+            margin: auto;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background: #f9f9f9;
+        }
+        #messages {
+            height: 300px;
+            overflow-y: scroll;
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        #user-input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        #send-btn {
+            padding: 10px 20px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div id="chatbox">
+        <div id="messages"></div>
+        <input type="text" id="user-input" placeholder="Type your message here...">
+        <button id="send-btn">Send</button>
+    </div>
+
+    <script>
+        document.getElementById('send-btn').addEventListener('click', function() {
+            const userInput = document.getElementById('user-input').value;
+            if (userInput.trim()) {
+                const messagesDiv = document.getElementById('messages');
+                const userMessageDiv = document.createElement('div');
+                userMessageDiv.textContent = 'You: ' + userInput;
+                messagesDiv.appendChild(userMessageDiv);
+
+                fetch('/chatbot/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    },
+                    body: 'message=' + encodeURIComponent(userInput)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    const botMessageDiv = document.createElement('div');
+                    botMessageDiv.textContent = 'Bot: ' + data.message;
+                    messagesDiv.appendChild(botMessageDiv);
+                    document.getElementById('user-input').value = '';
+                });
+            }
+        });
+    </script>
+</body>
+</html>
