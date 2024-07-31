@@ -1,6 +1,7 @@
+# utils.py
 import openpyxl
 from .models import QuestionAnswer
-
+from difflib import SequenceMatcher
 
 def save_excel_to_db(uploaded_file):
     wb = openpyxl.load_workbook(uploaded_file)
@@ -26,4 +27,14 @@ def save_excel_to_db(uploaded_file):
     return processed_data
 
 
+def get_most_similar_question(user_question, questions):
+    most_similar_question = None
+    highest_similarity = 0
 
+    for question in questions:
+        similarity = SequenceMatcher(None, user_question, question.question).ratio()
+        if similarity > highest_similarity:
+            highest_similarity = similarity
+            most_similar_question = question
+
+    return most_similar_question

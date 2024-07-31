@@ -15,18 +15,18 @@
             align-items: center;
             height: 100vh;
             text-align: center;
-            background-image: url('https://7enews.net/wp-content/uploads/2023/05/UNA.jpeg'); /* تغيير الرابط إلى رابط الصورة المرغوبة */
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
+            background-image: url('una-bot.jpg'); /* Update with the correct path to your image */
+            background-size: cover; /* Ensures the image covers the entire background */
+            background-repeat: no-repeat; /* Prevents the image from repeating */
+            background-position: center; /* Centers the image */
         }
         .message {
             background-color: rgba(255, 255, 255, 0.8);
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            max-width: 600px; /* Adjust maximum width of message box */
-            margin: auto; /* Center align the message box */
+            max-width: 90%; /* Limits the width of the message box for better readability on smaller screens */
+            box-sizing: border-box; /* Ensures padding is included in the element's total width and height */
         }
         h1 {
             color: #333;
@@ -47,8 +47,6 @@
             border-radius: 5px;
             cursor: pointer;
             transition: background-color 0.3s;
-            text-decoration: none; /* Added to remove underline from link */
-            display: inline-block; /* Added to adjust button size */
         }
         button:hover {
             background-color: #0056b3;
@@ -59,7 +57,13 @@
     <div class="message">
         <h1>Welcome to UNA Newspaper Chatbot</h1>
         <p>We are here to assist you with any questions or information you need. How can we help you today?</p>
-        <a href="{% url 'get_question' %}"><button>Start Chatting</button></a>
+        <button onclick="startChatting()">Start Chatting</button>
     </div>
+
+    <script>
+        function startChatting() {
+            window.location.href = '/question'; // Change '/question' to the URL of your question page
+        }
+    </script>
 </body>
 </html>
