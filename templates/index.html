@@ -4,66 +4,66 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Welcome to UNA Newspaper</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f8f9fa;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            text-align: center;
             background-image: url('una-bot.jpg'); /* Update with the correct path to your image */
             background-size: cover; /* Ensures the image covers the entire background */
             background-repeat: no-repeat; /* Prevents the image from repeating */
-            background-position: center; /* Centers the image */
+            background-position: center center; /* Centers the image */
+            background-attachment: fixed; /* Keeps the image fixed during scrolling */
+            height: 100vh; /* Ensures the body takes up the full viewport height */
+            margin: 0; /* Removes default margin */
         }
-        .message {
-            background-color: rgba(255, 255, 255, 0.8);
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            max-width: 90%; /* Limits the width of the message box for better readability on smaller screens */
-            box-sizing: border-box; /* Ensures padding is included in the element's total width and height */
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
         }
-        h1 {
+        .message-box {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            max-width: 500px;
+            text-align: center;
+        }
+        .message-box h1 {
+            font-size: 2.5rem;
             color: #333;
-            font-size: 2em;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
         }
-        p {
+        .message-box p {
+            font-size: 1.2rem;
             color: #666;
-            font-size: 1.2em;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
-        button {
+        .btn-primary {
             background-color: #007bff;
-            color: white;
-            padding: 10px 20px;
-            font-size: 1.2em;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
+            border-color: #007bff;
         }
-        button:hover {
+        .btn-primary:hover {
             background-color: #0056b3;
+            border-color: #004085;
         }
     </style>
 </head>
 <body>
-    <div class="message">
-        <h1>Welcome to UNA Newspaper Chatbot</h1>
-        <p>We are here to assist you with any questions or information you need. How can we help you today?</p>
-        <button onclick="startChatting()">Start Chatting</button>
+    <div class="container">
+        <div class="message-box">
+            <h1>Welcome to UNA Newspaper Chatbot</h1>
+            <p>We are here to assist you with any questions or information you need. How can we help you today?</p>
+            <a href="/question" class="btn btn-primary btn-lg">Start Chatting</a>
+        </div>
     </div>
 
-    <script>
-        function startChatting() {
-            window.location.href = '/question'; // Change '/question' to the URL of your question page
-        }
-    </script>
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
