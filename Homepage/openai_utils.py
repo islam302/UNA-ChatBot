@@ -1,42 +1,14 @@
-# openai_utils.py
-import os
 import requests
-import base64
 
 # Fetch API Key from environment variable
 GPT4V_KEY = '17bd4c377c8248f3a08bacb8c30e79c6'
-if not GPT4V_KEY:
-    raise ValueError("API key is missing. Please set the environment variable GPT4V_API_KEY.")
 
-# Define image path and encode the image if needed
-# IMAGE_PATH = "icon16ChatTk.ico"  # Replace with the actual image path
-# if IMAGE_PATH:
-#     try:
-#         with open(IMAGE_PATH, 'rb') as image_file:
-#             encoded_image = base64.b64encode(image_file.read()).decode('ascii')
-#     except FileNotFoundError:
-#         raise ValueError("Image file not found. Please check the path.")
-else:
-    encoded_image = None
-
-# Define headers
-headers = {
-    "Content-Type": "application/json",
-    "api-key": GPT4V_KEY,
-}
-
-# Define the payload for the request
 def get_chatgpt_response(user_question):
     payload = {
         "messages": [
             {
                 "role": "system",
-                "content": [
-                    {
-                        "type": "text",
-                        "text": "You are an AI assistant that helps people find information."
-                    }
-                ]
+                "content": "??? ????? ??? ????? ????? ?? ?????? ??? ?????????. ??? ?? ???? ???? ?????? ?????? ???????."
             },
             {
                 "role": "user",
@@ -50,6 +22,12 @@ def get_chatgpt_response(user_question):
 
     # Define the endpoint
     GPT4V_ENDPOINT = "https://islam.openai.azure.com/openai/deployments/gpt-4o/chat/completions?api-version=2024-02-15-preview"
+
+    # Define headers
+    headers = {
+        "Content-Type": "application/json",
+        "api-key": GPT4V_KEY,
+    }
 
     # Send request
     try:
