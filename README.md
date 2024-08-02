@@ -6,7 +6,11 @@
 <body>
     <div class="container">
         <h1>Question Answering Django Application</h1>
-        <p>This Django application allows users to upload questions and answers from an Excel file into a database, find the most similar question to a user's query, and get responses using a chatbot API.</p>
+        <p>TThis is a Django-based web application that allows users to submit questions and receive answers. The application leverages a database to store question-answer pairs and use uses the OpenAI GPT-4 model to provide answers for new questions.</p>
+
+<div class="container">
+        <h1></h1>
+        <p>This Django application allows users to upload questions and answers from an Excel file into a database, find the most similar question to a user's query,             and get responses using a chatbot API.</p>
         
 <h2>Features</h2>
         <ul>
