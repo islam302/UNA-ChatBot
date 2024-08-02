@@ -7,7 +7,8 @@
 </head>
 <body>
     <div class="container">
-<p>This is a web app integrated with various AI tools to support multiple languages spoken by users. It is a Django-based web application that allows users to submit questions and receive answers. The application leverages a database to store question-answer pairs and uses the OpenAI GPT-4 model to provide answers for new questions.</p>
+        <h1>Question Answering Django Application</h1>
+        <p>This is a web app integrated with various AI tools to support multiple languages spoken by users. It is a Django-based web application that allows users to         submit questions and receive answers. The application leverages a database to store question-answer pairs and uses the OpenAI GPT-4 model to provide answers for         new questions.</p>
 
 
 <h2>Features</h2>
