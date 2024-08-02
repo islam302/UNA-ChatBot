@@ -9,56 +9,69 @@
     <!-- Custom CSS -->
     <style>
         body {
-            background-image: url('una-bot.jpg'); /* Update with the correct path to your image */
-            background-size: cover; /* Ensures the image covers the entire background */
-            background-repeat: no-repeat; /* Prevents the image from repeating */
-            background-position: center center; /* Centers the image */
-            background-attachment: fixed; /* Keeps the image fixed during scrolling */
-            height: 100vh; /* Ensures the body takes up the full viewport height */
-            margin: 0; /* Removes default margin */
-        }
-
-        .container {
-            display: flex;
+            background: linear-gradient(135deg, #6e45e2, #88d3ce); /* Gradient background */
+            color: #fff; /* Light text color for contrast */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Modern font */
+            height: 100vh; /* Full viewport height */
+            margin: 0; /* Remove default margin */
+            display: flex; /* Flexbox for centering content */
             justify-content: center;
             align-items: center;
-            height: 100%;
         }
+
         .message-box {
-            background-color: rgba(255, 255, 255, 0.9);
-            padding: 30px;
+            background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent background */
+            padding: 40px;
             border-radius: 15px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
             max-width: 500px;
             text-align: center;
+            color: #333; /* Dark text color for readability */
         }
+
         .message-box h1 {
-            font-size: 2.5rem;
-            color: #333;
-            margin-bottom: 15px;
+            font-size: 2.8rem;
+            margin-bottom: 20px;
         }
+
         .message-box p {
-            font-size: 1.2rem;
-            color: #666;
-            margin-bottom: 25px;
+            font-size: 1.25rem;
+            margin-bottom: 30px;
         }
+
         .btn-primary {
             background-color: #007bff;
             border-color: #007bff;
+            padding: 12px 20px;
+            font-size: 1.125rem;
+            border-radius: 50px; /* Rounded button corners */
         }
+
         .btn-primary:hover {
             background-color: #0056b3;
             border-color: #004085;
         }
+
+        /* Add a responsive design */
+        @media (max-width: 768px) {
+            .message-box {
+                padding: 30px;
+                width: 90%;
+            }
+
+            .btn-primary {
+                width: 100%;
+                font-size: 1rem;
+                padding: 10px;
+            }
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="message-box">
-            <h1>Welcome to UNA Newspaper Chatbot</h1>
-            <p>We are here to assist you with any questions or information you need. How can we help you today?</p>
-            <a href="/question" class="btn btn-primary btn-lg">Start Chatting</a>
-        </div>
+    <div class="message-box">
+        <h1>Welcome to UNA Newspaper Chatbot</h1>
+        <p>We are here to assist you with any questions or information you need. How can we help you today?</p>
+        <a href="/question" class="btn btn-primary btn-lg">Start Chatting</a>
     </div>
 
     <!-- Bootstrap JS and dependencies -->
