@@ -3,57 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Question Answering Django Application</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            line-height: 1.6;
-            background-color: #f4f4f4;
-            color: #333;
-            padding: 20px;
-        }
-        h1, h2, h3, h4, h5 {
-            color: #444;
-        }
-        code {
-            background: #eee;
-            padding: 2px 6px;
-            border-radius: 4px;
-        }
-        pre {
-            background: #f9f9f9;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            overflow-x: auto;
-        }
-        a {
-            color: #0066cc;
-            text-decoration: none;
-        }
-        a:hover {
-            text-decoration: underline;
-        }
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            background: #fff;
-            padding: 20px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-            border-radius: 8px;
-        }
-        .highlight {
-            background: #fffae6;
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-weight: bold;
-        }
-    </style>
+    <title>ChatBot Django Application</title>
 </head>
 <body>
     <div class="container">
-        <h1>Question Answering Django Application</h1>
-        <p>This is a Django-based web application that allows users to submit questions and receive answers. The application leverages a database to store question-answer pairs and uses the OpenAI GPT-4 model to provide answers for new questions.</p>
+<p>This is a web app integrated with various AI tools to support multiple languages spoken by users. It is a Django-based web application that allows users to submit questions and receive answers. The application leverages a database to store question-answer pairs and uses the OpenAI GPT-4 model to provide answers for new questions.</p>
+
 
 <h2>Features</h2>
 <ul>
@@ -66,19 +21,20 @@
 
 <h2>Prerequisites</h2>
 <ul>
-    <li>Python 3.x</li>
-    <li>Django 3.x</li>
+    <li>Python</li>
+    <li>Django</li>
     <li>Django REST framework</li>
     <li>Openpyxl</li>
     <li>Fuzzywuzzy</li>
     <li>SpaCy</li>
     <li>Requests</li>
+    <li>Openai</li>
 </ul>
 
 <h2>Setup</h2>
 
 <h3>Clone the Repository</h3>
-<pre><code>git clone https://github.com/yourusername/question-answering-django.git
+<pre><code>git clone https://github.com/islam302/UNA-ChatBot.git
 cd question-answering-django</code></pre>
 
 <h3>Create and Activate a Virtual Environment</h3>
@@ -92,9 +48,6 @@ source venv/bin/activate   # On Windows: venv\Scripts\activate</code></pre>
 
 <h4>Apply Migrations:</h4>
 <pre><code>python manage.py migrate</code></pre>
-
-<h4>Create a Superuser:</h4>
-<pre><code>python manage.py createsuperuser</code></pre>
 
 <h4>Run the Server:</h4>
 <pre><code>python manage.py runserver</code></pre>
