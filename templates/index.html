@@ -6,6 +6,8 @@
     <title>Welcome to UNA Newspaper</title>
     <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome CSS for icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <!-- Custom CSS -->
     <style>
         body {
@@ -17,6 +19,7 @@
             display: flex; /* Flexbox for centering content */
             justify-content: center;
             align-items: center;
+            flex-direction: column; /* Stack content vertically */
         }
 
         .message-box {
@@ -27,6 +30,7 @@
             max-width: 500px;
             text-align: center;
             color: #333; /* Dark text color for readability */
+            margin-bottom: 20px;
         }
 
         .message-box h1 {
@@ -53,6 +57,29 @@
             border-color: #004085;
         }
 
+        .footer {
+            text-align: center;
+            color: #fff;
+            margin-top: 20px;
+        }
+
+        .footer p {
+            margin: 5px 0;
+        }
+
+        .footer .social-icons a {
+            color: #fff;
+            margin: 0 10px;
+            font-size: 1.5rem;
+        }
+
+        .badge {
+            display: block;
+            margin-top: 10px;
+            font-size: 0.9rem;
+            color: #fff;
+        }
+
         /* Add a responsive design */
         @media (max-width: 768px) {
             .message-box {
@@ -74,6 +101,17 @@
         <p>We are here to assist you with any questions or information you need. How can we help you today?</p>
         <a href="/question" class="btn btn-primary btn-lg">Start Chatting</a>
         <a href="/upload" class="btn btn-primary btn-lg">Upload File</a>
+    </div>
+
+    <div class="footer">
+        <p>&copy; 2024 <a href="https://una-oic.org/" target="_blank" style="color: darkgreen;">UNA Newspaper</a> All rights reserved.</p>
+        <p class="badge">Developed by Islam Badran</p>
+        <div class="social-icons">
+            <a href="https://wa.me/201013919821" target="_blank"><i class="fab fa-whatsapp"></i></a>
+            <a href="https://www.linkedin.com/in/islam-badran-39a577225/" target="_blank"><i class="fab fa-linkedin"></i></a>
+            <a href="https://www.facebook.com/islam.badran.77/?locale=ar_AR" target="_blank"><i class="fab fa-facebook"></i></a>
+            <a href="https://github.com/islam302/islam-badran" target="_blank"><i class="fab fa-github"></i></a>
+        </div>
     </div>
 
     <!-- Bootstrap JS and dependencies -->
