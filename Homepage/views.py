@@ -1,11 +1,10 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404, redirect
 from django.http import JsonResponse
-from .forms import QuestionForm, UploadFileForm
+from .forms import QuestionForm, UploadFileForm, AddQuestionForm
 from .models import QuestionAnswer
-from .openai_utils import get_chatgpt_response
-from .utils import get_most_similar_question, save_excel_to_db
+from .utils import get_similar_questions, save_excel_to_db
 import logging
-import requests
+from .utils import save_excel_to_db
 
 def custom_404(request, exception):
     return render(request, '404.html', status=404)
@@ -29,10 +28,7 @@ def upload_file_view(request):
     else:
         form = UploadFileForm()
 
-    try:
-        all_data = QuestionAnswer.objects.all()
-    except QuestionAnswer.DoesNotExist:
-        all_data = []
+    all_data = QuestionAnswer.objects.all()
 
     return render(request, 'upload.html', {
         'form': form,
@@ -44,6 +40,7 @@ def upload_file_view(request):
 def get_question_from_user(request):
     answer = None
     question = None
+    similar_questions = None
 
     if request.method == 'POST':
         form = QuestionForm(request.POST)
@@ -51,30 +48,72 @@ def get_question_from_user(request):
             question = form.cleaned_data['question']
             logging.info(f"User question: {question}")
 
-            # Fetch all questions from the database
             all_questions = QuestionAnswer.objects.all()
+            similar_questions = get_similar_questions(question, all_questions)
 
-            # Find the most similar question
-            similar_question = get_most_similar_question(question, all_questions)
-
-            if similar_question:
-                answer = similar_question.answer
-                logging.info(f"Matched question: {similar_question.question}")
-                logging.info(f"Answer: {answer}")
+            if similar_questions:
+                # Display similar questions for user to choose
+                return render(request, 'question.html', {
+                    'form': form,
+                    'similar_questions': similar_questions,
+                    'question': question
+                })
             else:
-                try:
-                    # Send the question to ChatGPT API
-                    chatgpt_answer = get_chatgpt_response(question)
-                    logging.info(f"Response from ChatGPT: {chatgpt_answer}")
-                    answer = chatgpt_answer
-                except requests.exceptions.HTTPError as err:
-                    logging.error(f"HTTPError: {err}")
-                    return JsonResponse({"error": str(err)}, status=400)
+                answer = 'There is no answer for this question'
     else:
         form = QuestionForm()
 
     return render(request, 'question.html', {
         'form': form,
-        'answer': answer,
-        'question': question if request.method == 'POST' else None
+        'answer': answer
     })
+
+def select_similar_question(request, question_id):
+    question_answer = get_object_or_404(QuestionAnswer, id=question_id)
+    return JsonResponse({
+        'question': question_answer.question,
+        'answer': question_answer.answer
+    })
+
+def get_answer(request, question_id):
+    try:
+        question = QuestionAnswer.objects.get(id=question_id)
+        response_data = {
+            'question': question.question,
+            'answer': question.answer,
+        }
+        return JsonResponse(response_data)
+    except QuestionAnswer.DoesNotExist:
+        return JsonResponse({'error': 'Question not found'}, status=404)
+
+def add_question(request):
+    if request.method == 'POST':
+        form = AddQuestionForm(request.POST)
+        if form.is_valid():
+            question_text = form.cleaned_data['question']
+            answer_text = form.cleaned_data['answer']
+            new_question = QuestionAnswer(question=question_text, answer=answer_text)
+            new_question.save()
+            return redirect('upload_file')
+    else:
+        form = AddQuestionForm()
+
+    return render(request, 'upload.html', {'question_form': form})
+
+def edit_question(request, id):
+    question_answer = get_object_or_404(QuestionAnswer, id=id)
+
+    if request.method == 'POST':
+        form = AddQuestionForm(request.POST, instance=question_answer)
+        if form.is_valid():
+            form.save()
+            return redirect('upload_file')
+    else:
+        form = AddQuestionForm(instance=question_answer)
+
+    return render(request, 'edit_question.html', {'form': form})
+
+def delete_question(request, id):
+    question_answer = get_object_or_404(QuestionAnswer, id=id)
+    question_answer.delete()
+    return redirect('upload_file')

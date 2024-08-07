@@ -1,5 +1,3 @@
-# urls.py
-
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
@@ -7,12 +5,16 @@ from django.urls import path
 from django.views.generic.base import TemplateView
 from Homepage import views
 
+
 urlpatterns = [
-    path('admin', admin.site.urls),
+    path('admin/', admin.site.urls),
     path('', TemplateView.as_view(template_name='index.html'), name='index'),
     path('upload', views.upload_file_view, name='upload_file'),
-    # path('test-question/', views.test_question_page, name='test_question'),
     path('question', views.get_question_from_user, name='get_question'),
+    path('get_answer/<uuid:question_id>/', views.get_answer, name='get_answer'),
+    path('add', views.add_question, name='add_question'),
+    path('edit/<uuid:id>', views.edit_question, name='edit_question'),
+    path('delete/<uuid:id>', views.delete_question, name='delete_question'),
 ]
 
 if settings.DEBUG:

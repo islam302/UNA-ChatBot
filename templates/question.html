@@ -9,192 +9,256 @@
     <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <!-- Custom CSS -->
-    <style>
-        body {
-            background: linear-gradient(to right, #00c6ff, #0072ff);
-            font-family: 'Arial', sans-serif;
-            color: #ffffff;
-            margin: 0;
-            padding: 0;
-            overflow-x: hidden;
+<style>
+    body {
+        background: linear-gradient(to right, #0b0c0d, #2b2d2f);
+        font-family: 'Arial', sans-serif;
+        color: #ffffff;
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden;
+    }
+    .container {
+        margin-top: 60px;
+        background: rgba(255, 255, 255, 0.1);
+        padding: 40px;
+        border-radius: 20px;
+        box-shadow: 0 20px 30px rgba(0, 0, 0, 0.2);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        max-width: 800px;
+        transition: transform 0.4s, box-shadow 0.4s, background 0.4s;
+    }
+    .container:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 30px 50px rgba(0, 0, 0, 0.3);
+        background: rgba(255, 255, 255, 0.2);
+    }
+    .header {
+        text-align: center;
+        margin-bottom: 40px;
+    }
+    .header h1 {
+        font-size: 3.5rem;
+        color: #00bfae;
+        text-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
+        margin: 0;
+        position: relative;
+        display: inline-block;
+        padding-right: 50px;
+    }
+    .header h1::after {
+        content: '\f059'; /* Font Awesome question mark icon */
+        font-family: 'Font Awesome 5 Free';
+        font-weight: 900;
+        position: absolute;
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #00bfae;
+        font-size: 2.5rem;
+        opacity: 0.8;
+        animation: bounce 1.5s infinite;
+    }
+    @keyframes bounce {
+        0%, 100% {
+            transform: translateY(-50%) scale(1);
         }
-        .container {
-            margin-top: 60px;
-            background: rgba(255, 255, 255, 0.1);
-            padding: 40px;
-            border-radius: 20px;
-            box-shadow: 0 20px 30px rgba(0, 0, 0, 0.2);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            max-width: 800px;
-            transition: transform 0.4s, box-shadow 0.4s, background 0.4s;
+        50% {
+            transform: translateY(-60%) scale(1.2);
         }
-        .container:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 30px 50px rgba(0, 0, 0, 0.3);
-            background: rgba(255, 255, 255, 0.3);
-        }
-        .header {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-        .header h1 {
-            font-size: 3.5rem;
-            color: #ffffff;
-            text-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
-            margin: 0;
-            position: relative;
-            display: inline-block;
-            padding-right: 50px;
-        }
-        .header h1::after {
-            content: '\f059'; /* Font Awesome question mark icon */
-            font-family: 'Font Awesome 5 Free';
-            font-weight: 900;
-            position: absolute;
-            right: 0;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #ffffff;
-            font-size: 2.5rem;
-            opacity: 0.8;
-            animation: bounce 1.5s infinite;
-        }
-        @keyframes bounce {
-            0%, 100% {
-                transform: translateY(-50%) scale(1);
-            }
-            50% {
-                transform: translateY(-60%) scale(1.2);
-            }
-        }
-        .form-group {
-            margin-bottom: 20px;
-        }
-        .form-control {
-            border-radius: 50px;
-            padding: 15px;
-            font-size: 16px;
-            border: 1px solid #dddddd;
-            transition: border-color 0.3s, box-shadow 0.3s;
-            background: #ffffff;
-        }
-        .form-control:focus {
-            border-color: #0072ff;
-            box-shadow: 0 0 15px rgba(0, 114, 255, 0.4);
-            background: #f0faff;
-        }
-        .btn-primary {
-            background-color: #0072ff;
-            border-color: #0072ff;
-            border-radius: 50px;
-            padding: 15px 25px;
-            font-size: 16px;
-            transition: background-color 0.3s, box-shadow 0.3s;
-            position: relative;
-            overflow: hidden;
-        }
-        .btn-primary:hover {
-            background-color: #0056b3;
-            border-color: #004494;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
-        }
-        .btn-primary::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 300%;
-            height: 300%;
-            background: linear-gradient(45deg, rgba(0, 114, 255, 0.4), rgba(0, 114, 255, 0.1));
-            transition: transform 0.5s;
-            transform: scale(0);
-            z-index: 0;
-        }
-        .btn-primary:hover::before {
+    }
+    .form-group {
+        margin-bottom: 20px;
+    }
+    .form-control {
+        border-radius: 50px;
+        padding: 15px;
+        font-size: 16px;
+        border: 1px solid #333;
+        transition: border-color 0.3s, box-shadow 0.3s;
+        background: #1e1e1e;
+        color: #ffffff;
+    }
+    .form-control:focus {
+        border-color: #00bfae;
+        box-shadow: 0 0 15px rgba(0, 191, 174, 0.4);
+        background: #2a2a2a;
+    }
+    .btn-primary {
+        background-color: #00bfae;
+        border-color: #00bfae;
+        border-radius: 50px;
+        padding: 15px 25px;
+        font-size: 16px;
+        transition: background-color 0.3s, box-shadow 0.3s;
+        position: relative;
+        overflow: hidden;
+        color: #ffffff;
+        text-decoration: none;
+    }
+    .btn-primary:hover {
+        background-color: #009b8e;
+        border-color: #009b8e;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    }
+    .btn-primary::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 300%;
+        height: 300%;
+        background: linear-gradient(45deg, rgba(0, 191, 174, 0.4), rgba(0, 191, 174, 0.1));
+        transition: transform 0.5s;
+        transform: scale(0);
+        z-index: 0;
+    }
+    .btn-primary:hover::before {
+        transform: scale(1);
+    }
+    .btn-primary span {
+        position: relative;
+        z-index: 1;
+    }
+    .btn-link {
+        display: inline-block;
+        padding: 10px 20px;
+        font-size: 16px;
+        color: #ffffff;
+        background-color: #00bfae;
+        border: none;
+        border-radius: 50px;
+        text-align: center;
+        text-decoration: none;
+        transition: background-color 0.3s, box-shadow 0.3s;
+        position: relative;
+        overflow: hidden;
+    }
+    .btn-link:hover {
+        background-color: #009b8e;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    }
+    .btn-link::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 300%;
+        height: 300%;
+        background: rgba(0, 191, 174, 0.2);
+        border-radius: 50%;
+        transform: translate(-50%, -50%) scale(0);
+        transition: transform 0.5s;
+        z-index: 0;
+    }
+    .btn-link:hover::before {
+        transform: translate(-50%, -50%) scale(1);
+    }
+    .btn-link span {
+        position: relative;
+        z-index: 1;
+    }
+    .btn-similar {
+        background-color: #00bfae;
+        border-color: #00bfae;
+        border-radius: 50px;
+        padding: 10px 20px;
+        font-size: 14px;
+        transition: background-color 0.3s, box-shadow 0.3s;
+        color: #ffffff;
+        text-decoration: none;
+        display: inline-block;
+        margin: 5px 0;
+    }
+    .btn-similar:hover {
+        background-color: #009b8e;
+        border-color: #009b8e;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    }
+    .btn-similar::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 300%;
+        height: 300%;
+        background: linear-gradient(45deg, rgba(0, 191, 174, 0.4), rgba(0, 191, 174, 0.1));
+        transition: transform 0.5s;
+        transform: scale(0);
+        z-index: 0;
+    }
+    .btn-similar:hover::before {
+        transform: scale(1);
+    }
+    .answer {
+        margin-top: 30px;
+        font-size: 18px;
+        border-left: 6px solid #00bfae;
+        padding: 20px;
+        background: rgba(0, 191, 174, 0.1);
+        border-radius: 15px;
+        box-shadow: 0 8px 16px rgba(0, 191, 174, 0.2);
+        animation: fadeIn 1.5s ease-in-out;
+    }
+    .answer strong {
+        display: block;
+        margin-bottom: 15px;
+        padding: 15px;
+        background: #00bfae;
+        color: #ffffff;
+        border-radius: 10px;
+        font-size: 20px;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    }
+    .answer p {
+        background: #ffffff;
+        color: #333;
+        padding: 15px;
+        border-radius: 10px;
+        font-size: 16px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        position: relative;
+        overflow: hidden;
+    }
+    .answer p::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: rgba(0, 191, 174, 0.15);
+        border-radius: 50%;
+        transform: rotate(45deg);
+        animation: pulse 4s infinite;
+    }
+    @keyframes pulse {
+        0% {
             transform: scale(1);
+            opacity: 0.5;
         }
-        .btn-primary span {
-            position: relative;
-            z-index: 1;
+        50% {
+            transform: scale(1.1);
+            opacity: 0.7;
         }
-        .answer {
-            margin-top: 30px;
-            font-size: 18px;
-            border-left: 6px solid #0072ff;
-            padding: 20px;
-            background: rgba(0, 114, 255, 0.1);
-            border-radius: 15px;
-            box-shadow: 0 8px 16px rgba(0, 114, 255, 0.2);
-            animation: fadeIn 1.5s ease-in-out;
+        100% {
+            transform: scale(1);
+            opacity: 0.5;
         }
-        .answer strong {
-            display: block;
-            margin-bottom: 15px;
-            padding: 15px;
-            background: #003366; /* Dark blue background */
-            color: #ffffff;
-            border-radius: 10px;
-            font-size: 20px;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    }
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
         }
-        .answer p {
-            background: #ffffff; /* White background for the text */
-            color: #333;
-            padding: 15px;
-            border-radius: 10px;
-            font-size: 16px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-            position: relative;
-            overflow: hidden;
+        to {
+            opacity: 1;
+            transform: translateY(0);
         }
-        .answer p::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: rgba(0, 123, 255, 0.15);
-            border-radius: 50%;
-            transform: rotate(45deg);
-            animation: pulse 4s infinite;
-        }
-        @keyframes pulse {
-            0% {
-                transform: scale(1);
-                opacity: 0.5;
-            }
-            50% {
-                transform: scale(1.1);
-                opacity: 0.7;
-            }
-            100% {
-                transform: scale(1);
-                opacity: 0.5;
-            }
-        }
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        @media (max-width: 768px) {
-            .container {
-                margin: 20px;
-                padding: 20px;
-            }
-            .header h1 {
-                font-size: 2.5rem;
-            }
-        }
-    </style>
+    }
+</style>
 </head>
 <body>
     <div class="container">
@@ -211,8 +275,23 @@
 
         {% if question %}
         <div class="answer">
-            <strong>Your question:</strong>
+            <strong>Your Question:</strong>
             <p>{{ question }}</p>
+        </div>
+        {% endif %}
+
+        {% if similar_questions %}
+        <div class="answer">
+            <strong>Similar Questions:</strong>
+            <ul>
+            {% for item in similar_questions %}
+            <li style="list-style: none; margin-bottom: 10px;">
+                <a href="#" class="btn btn-link" data-question-id="{{ item.id }}">{{ item.question }}</a>
+            </li>
+            {% endfor %}
+
+            </ul>
+            <p>Click on similar questions to get answers.</p>
         </div>
         {% endif %}
 
@@ -228,5 +307,25 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        document.querySelectorAll('.btn-link').forEach(button => {
+            button.addEventListener('click', function(event) {
+                event.preventDefault();
+                const questionId = this.getAttribute('data-question-id');
+
+                fetch(`/get_answer/${questionId}/`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.answer) {
+                            const answerDiv = document.createElement('div');
+                            answerDiv.classList.add('answer');
+                            answerDiv.innerHTML = `<strong>Answer:</strong><p>${data.answer}</p>`;
+                            document.body.appendChild(answerDiv);
+                        }
+                    });
+            });
+        });
+    </script>
 </body>
 </html>

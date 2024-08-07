@@ -1,8 +1,12 @@
-# # utils.py
-# import openpyxl
-# from .models import QuestionAnswer
-# from fuzzywuzzy import fuzz
-#
+from .models import QuestionAnswer
+from fuzzywuzzy import fuzz
+import openpyxl
+import spacy
+
+
+nlp = spacy.load('en_core_web_md')
+
+
 # def save_excel_to_db(uploaded_file):
 #     wb = openpyxl.load_workbook(uploaded_file)
 #     sheet = wb.active
@@ -19,36 +23,20 @@
 #         question = row[question_col]
 #         answer = row[answer_col]
 #         if question and answer:
-#             if not QuestionAnswer.objects.filter(question=question, answer=answer).exists():
+#             # check if the question already exists
+#             existing_entry = QuestionAnswer.objects.filter(question=question).first()
+#             if existing_entry:
+#                 # Update the answer if the question exists
+#                 existing_entry.answer = answer
+#                 existing_entry.save()
+#                 processed_data.append({'question': question, 'answer': answer, 'updated': True})
+#             else:
+#                 # Create a new entry if the question doesn't exist
 #                 question_answer = QuestionAnswer(question=question, answer=answer)
 #                 question_answer.save()
-#                 processed_data.append({'question': question, 'answer': answer})
+#                 processed_data.append({'question': question, 'answer': answer, 'updated': False})
 #     wb.close()
 #     return processed_data
-#
-#
-# def get_most_similar_question(user_question, questions):
-#     most_similar_question = None
-#     highest_similarity = 3.0
-#
-#     for question in questions:
-#         similarity = fuzz.ratio(user_question, question.question)
-#         if similarity > highest_similarity:
-#             highest_similarity = similarity
-#             most_similar_question = question
-#
-#     return most_similar_question
-#
-
-
-from .models import QuestionAnswer
-from fuzzywuzzy import fuzz
-import openpyxl
-import spacy
-
-
-# Load spaCy model
-nlp = spacy.load('en_core_web_md')
 
 def save_excel_to_db(uploaded_file):
     wb = openpyxl.load_workbook(uploaded_file)
@@ -73,35 +61,20 @@ def save_excel_to_db(uploaded_file):
     wb.close()
     return processed_data
 
-def get_most_similar_question(user_question, questions):
-    most_similar_question = None
-    highest_similarity = 50
+
+def get_similar_questions(user_question, questions, threshold=70):
+    similar_questions = []
 
     for question in questions:
         similarity = fuzz.ratio(user_question, question.question)
-        print(similarity)
-        if similarity > highest_similarity:
-            highest_similarity = similarity
-            most_similar_question = question
+        if similarity >= threshold:
+            similar_questions.append({
+                'id': question.id,
+                'question': question.question,
+                'answer': question.answer,
+                'similarity': similarity
+            })
 
-    return most_similar_question
+    return sorted(similar_questions, key=lambda x: x['similarity'], reverse=True)
 
 
-# def get_most_similar_question(user_question, questions, threshold=0.7):
-#     user_question_doc = nlp(user_question)
-#
-#     most_similar_question = None
-#     highest_similarity = 0
-#
-#     for question in questions:
-#         question_doc = nlp(question.question)
-#         similarity = user_question_doc.similarity(question_doc)
-#         print(similarity)
-#         if similarity > highest_similarity:
-#             highest_similarity = similarity
-#             most_similar_question = question
-#
-#     # Return the most similar question if the similarity is above the threshold
-#     if highest_similarity >= threshold:
-#         return most_similar_question
-#     return None
