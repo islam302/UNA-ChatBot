@@ -31,7 +31,7 @@ def save_excel_to_db(uploaded_file):
     return processed_data
 
 
-def get_similar_questions(user_question, questions, threshold=70):
+def get_similar_questions(user_question, questions, threshold=50):
     similar_questions = []
 
     for question in questions:
