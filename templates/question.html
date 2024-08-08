@@ -270,17 +270,25 @@
         {% endif %}
 
         {% if similar_questions %}
-        <div class="answer">
-            <strong>Similar Questions:</strong>
-            <ul>
-            {% for item in similar_questions %}
-            <li style="list-style: none; margin-bottom: 10px;">
-                <a href="#" class="btn btn-link" data-question-id="{{ item.id }}">{{ item.question }}</a>
-            </li>
-            {% endfor %}
-            </ul>
-            <p>Click on similar questions to get answers.</p>
-        </div>
+        {% if similar_questions|length == 1 %}
+            <div class="answer">
+                <strong>Similar Question:</strong>
+                <p>{{ similar_questions.0.question }}</p>
+                <p><strong>Answer:</strong> {{ similar_questions.0.answer }}</p>
+            </div>
+        {% else %}
+            <div class="answer">
+                <strong>Similar Questions:</strong>
+                <ul>
+                {% for item in similar_questions %}
+                <li style="list-style: none; margin-bottom: 10px;">
+                    <a href="#" class="btn btn-link" data-question-id="{{ item.id }}">{{ item.question }}</a>
+                </li>
+                {% endfor %}
+                </ul>
+                <p>Click on similar questions to get answers.</p>
+            </div>
+        {% endif %}
         {% endif %}
 
         {% if answer %}
@@ -338,8 +346,7 @@
             }
         });
     });
-</script>
-
+    </script>
 </body>
 </html>
 

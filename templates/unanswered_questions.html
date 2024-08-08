@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unanswered Questions</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <style>
+        /* Add any custom styles here */
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="mt-5">Unanswered Questions</h1>
+        <ul class="list-group mt-3">
+            {% for question in unanswered_questions %}
+                <li class="list-group-item">
+                    {{ question.question }}
+                    <a href="{% url 'add_answer_to_question' question.id %}" class="btn btn-primary btn-sm float-right">Add Answer</a>
+                </li>
+            {% empty %}
+                <li class="list-group-item">No unanswered questions.</li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>

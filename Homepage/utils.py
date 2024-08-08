@@ -46,4 +46,3 @@ def get_similar_questions(user_question, questions, threshold=50):
 
     return sorted(similar_questions, key=lambda x: x['similarity'], reverse=True)
 
-
