@@ -10,7 +10,9 @@ SECRET_KEY = 'jf29BphWoc5P5LmRxlK9Dd7h-YxSyjZ-lFS5d74_U0ZxgW17DB0wRA7w1J6x38A'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
-
+# Static files (CSS, JavaScript, Images)
+STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 # SECURITY WARNING: define the correct hosts in production!
 ALLOWED_HOSTS = ['*']
 
@@ -58,11 +60,15 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'ChatBot.wsgi.application'
 
-# Database
+#
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'Chatbot',
+        'USER': 'postgres',
+        'PASSWORD': 'civil hacker',
+        'HOST': 'localhost',
+        'PORT': '7070',
     }
 }
 
@@ -88,9 +94,7 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
-# Static files (CSS, JavaScript, Images)
-STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR / 'staticfiles'
+
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

@@ -8,7 +8,7 @@ from Homepage import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', TemplateView.as_view(template_name='home.html'), name='index'),
+    path('', TemplateView.as_view(template_name='index.html'), name='index'),
     path('upload', views.upload_file_view, name='upload_file'),
     path('question', views.get_question_from_user, name='get_question'),
     path('get_answer/<uuid:question_id>/', views.get_answer, name='get_answer'),
