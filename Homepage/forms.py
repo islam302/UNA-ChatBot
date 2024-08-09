@@ -24,4 +24,12 @@ class UnansweredQuestionForm(forms.ModelForm):
             'question': forms.TextInput(attrs={'class': 'form-control'}),
         }
 
+class EditUnAnswerQuestionForm(forms.ModelForm):
+    class Meta:
+        model = UnansweredQuestion
+        fields = ['question']
+        widgets = {
+            'question': forms.Textarea(attrs={'rows': 2, 'class': 'form-control'})
+        }
+
 

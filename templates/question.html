@@ -248,6 +248,7 @@
             font-size: 14px;
         }
     </style>
+
 </head>
 <body>
     <div class="container">
@@ -269,29 +270,30 @@
         </div>
         {% endif %}
 
-        {% if similar_questions %}
-        {% if similar_questions|length == 1 %}
-            <div class="answer">
-                <strong>Similar Question:</strong>
-                <p>{{ similar_questions.0.question }}</p>
-                <p><strong>Answer:</strong> {{ similar_questions.0.answer }}</p>
-            </div>
-        {% else %}
-            <div class="answer">
-                <strong>Similar Questions:</strong>
-                <ul>
-                {% for item in similar_questions %}
-                <li style="list-style: none; margin-bottom: 10px;">
-                    <a href="#" class="btn btn-link" data-question-id="{{ item.id }}">{{ item.question }}</a>
-                </li>
-                {% endfor %}
-                </ul>
-                <p>Click on similar questions to get answers.</p>
-            </div>
-        {% endif %}
+        {% if answers %}
+        <div class="answer">
+            <strong>Answers:</strong>
+            {% for ans in answers %}
+                <p>{{ ans }}</p>
+            {% endfor %}
+        </div>
         {% endif %}
 
-        {% if answer %}
+        {% if similar_questions %}
+        <div class="answer">
+            <strong>Similar Questions:</strong>
+            <ul>
+            {% for item in similar_questions %}
+            <li style="list-style: none; margin-bottom: 10px;">
+                <a href="#" class="btn btn-link" data-question-id="{{ item.id }}">{{ item.question }}</a>
+            </li>
+            {% endfor %}
+            </ul>
+            <p>Click on similar questions to get answers.</p>
+        </div>
+        {% endif %}
+
+        {% if answer and not answers %}
         <div class="answer">
             <strong>Answer:</strong>
             <p>{{ answer }}</p>
@@ -304,50 +306,56 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
     <script>
-    document.querySelectorAll('.btn-link').forEach(button => {
-        button.addEventListener('click', function(event) {
-            event.preventDefault();
-            const questionId = this.getAttribute('data-question-id');
-            const answerKey = `answer_${questionId}`;
+document.querySelectorAll('.btn-link').forEach(button => {
+    button.addEventListener('click', function(event) {
+        event.preventDefault();
+        const questionId = this.getAttribute('data-question-id');
+        const answerKey = `answer_${questionId}`;
 
-            // تحقق مما إذا كانت الإجابة موجودة في sessionStorage
-            const cachedAnswer = sessionStorage.getItem(answerKey);
+        // Check if the answer is already cached
+        const cachedAnswer = sessionStorage.getItem(answerKey);
 
-            // تحقق مما إذا كانت الإجابة موجودة بالفعل في الصفحة
-            const existingAnswerDiv = document.querySelector(`#answer_${questionId}`);
+        // Check if the answer div already exists on the page
+        let answerDiv = document.getElementById(answerKey);
 
-            if (cachedAnswer && !existingAnswerDiv) {
-                // إذا كانت الإجابة موجودة في sessionStorage، اعرضها مباشرة
-                const answerDiv = document.createElement('div');
+        if (cachedAnswer) {
+            // If answer is cached, display it
+            if (answerDiv) {
+                answerDiv.innerHTML = cachedAnswer;
+            } else {
+                answerDiv = document.createElement('div');
                 answerDiv.classList.add('answer');
-                answerDiv.id = `answer_${questionId}`; // إضافة ID لتجنب التكرار
+                answerDiv.id = answerKey; // Add ID to avoid duplicates
                 answerDiv.innerHTML = cachedAnswer;
                 document.body.appendChild(answerDiv);
-            } else if (!cachedAnswer) {
-                // إذا لم تكن الإجابة موجودة، قم بطلبها من الخادم
-                fetch(`/get_answer/${questionId}/`)
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.answer) {
-                            const answerHtml = `<strong>Answer:</strong><p>${data.answer}</p>`;
-                            const answerDiv = document.createElement('div');
+            }
+        } else {
+            // Fetch answer from server if not cached
+            fetch(`/get_answer/${questionId}/`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.answer) {
+                        const answerHtml = `<strong>Answer:</strong><p>${data.answer}</p>`;
+                        if (answerDiv) {
+                            answerDiv.innerHTML = answerHtml;
+                        } else {
+                            answerDiv = document.createElement('div');
                             answerDiv.classList.add('answer');
-                            answerDiv.id = `answer_${questionId}`; // إضافة ID لتجنب التكرار
+                            answerDiv.id = answerKey; // Add ID to avoid duplicates
                             answerDiv.innerHTML = answerHtml;
                             document.body.appendChild(answerDiv);
-
-                            // قم بتخزين الإجابة في sessionStorage
-                            sessionStorage.setItem(answerKey, answerHtml);
                         }
-                    })
-                    .catch(error => {
-                        console.error('Error fetching answer:', error);
-                    });
-            }
-        });
+
+                        // Cache the answer
+                        sessionStorage.setItem(answerKey, answerHtml);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching answer:', error);
+                });
+        }
     });
-    </script>
+});
+</script>
 </body>
 </html>
-
-

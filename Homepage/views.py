@@ -1,9 +1,10 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import JsonResponse
-from .forms import QuestionForm, UploadFileForm, AddQuestionForm, UnansweredQuestionForm
+from .forms import QuestionForm, UploadFileForm, AddQuestionForm, UnansweredQuestionForm, EditUnAnswerQuestionForm
 from .models import QuestionAnswer, UnansweredQuestion
 from .utils import get_similar_questions, save_excel_to_db
 import logging
+from django.urls import reverse
 
 def custom_404(request, exception):
     return render(request, '404.html', status=404)
@@ -87,7 +88,7 @@ def delete_question(request, id):
     return redirect('upload_file')
 
 def get_question_from_user(request):
-    answer = None
+    answers = []  # List to store multiple answers
     question = None
     similar_questions = None
 
@@ -97,6 +98,29 @@ def get_question_from_user(request):
             question = form.cleaned_data['question']
             logging.info(f"User question: {question}")
 
+            # Retrieve questions from both models
+            answered_questions = set(QuestionAnswer.objects.values_list('question', flat=True))
+            unanswered_questions = set(UnansweredQuestion.objects.values_list('question', flat=True))
+
+            # Check if the question exists in either model
+            if question in answered_questions:
+                # Retrieve all answers for the question
+                answers = QuestionAnswer.objects.filter(question=question).values_list('answer', flat=True)
+                return render(request, 'question.html', {
+                    'form': form,
+                    'answers': answers,  # Pass all answers to the template
+                    'question': question,
+                })
+
+            elif question in unanswered_questions:
+                answer = "This question is already in our database and awaiting an answer."
+                return render(request, 'question.html', {
+                    'form': form,
+                    'answer': answer,
+                    'question': question,
+                })
+
+            # If the question doesn't exist, find similar questions
             all_questions = QuestionAnswer.objects.all()
             similar_questions = get_similar_questions(question, all_questions)
 
@@ -107,28 +131,21 @@ def get_question_from_user(request):
                     'question': question
                 })
             else:
-                answer = 'There is no answer for this question'
-                unanswered_form = UnansweredQuestionForm(initial={'question': question})
+                # Save the question in the UnansweredQuestion table if not found anywhere
+                unanswered_question = UnansweredQuestion(question=question)
+                unanswered_question.save()
+                answer = 'There is no answer to this question at the moment. We will look into it later.'
                 return render(request, 'question.html', {
                     'form': form,
                     'answer': answer,
-                    'unanswered_form': unanswered_form
                 })
     else:
         form = QuestionForm()
 
     return render(request, 'question.html', {
         'form': form,
-        'answer': answer
+        'answers': answers
     })
-
-def store_unanswered_question(request):
-    if request.method == 'POST':
-        form = UnansweredQuestionForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return JsonResponse({'status': 'success'})
-    return JsonResponse({'status': 'error'}, status=400)
 
 def unanswered_questions(request):
     unanswered_questions = UnansweredQuestion.objects.all()
@@ -156,3 +173,24 @@ def add_answer_to_question(request, question_id):
         'form': form,
         'question': question
     })
+
+def edit_unanswer_question(request, question_id):
+    question = get_object_or_404(UnansweredQuestion, id=question_id)
+
+    if request.method == 'POST':
+        form = EditUnAnswerQuestionForm(request.POST, instance=question)
+        if form.is_valid():
+            form.save()
+            return redirect('unanswered_questions')
+    else:
+        form = EditUnAnswerQuestionForm(instance=question)
+
+    return render(request, 'edit_question.html', {
+        'form': form,
+        'question': question
+    })
+
+def delete_unanswer_question(request, question_id):
+    question = get_object_or_404(UnansweredQuestion, id=question_id)
+    question.delete()
+    return redirect('unanswered_questions')

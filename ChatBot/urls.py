@@ -15,10 +15,12 @@ urlpatterns = [
     path('add', views.add_question, name='add_question'),
     path('edit/<uuid:id>', views.edit_question, name='edit_question'),
     path('delete/<uuid:id>', views.delete_question, name='delete_question'),
-    path('store_unanswered/', views.store_unanswered_question, name='store_unanswered_question'),
-    path('unanswered/', views.unanswered_questions, name='unanswered_questions'),
-    path('add_answer/<uuid:question_id>/', views.add_answer_to_question, name='add_answer_to_question'),
 
+    # Unanswered questions
+    path('unanswered_questions', views.unanswered_questions, name='unanswered_questions'),
+    path('add_answer_to_question/<uuid:question_id>/', views.add_answer_to_question, name='add_answer_to_question'),
+    path('edit_unanswer_question/<uuid:question_id>/', views.edit_unanswer_question, name='edit_unanswer_question'),
+    path('delete_unanswer_question/<uuid:question_id>/', views.delete_unanswer_question, name='delete_unanswer_question'),
 ]
 
 if settings.DEBUG:
