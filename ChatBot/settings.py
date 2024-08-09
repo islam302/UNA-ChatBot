@@ -14,7 +14,7 @@ DEBUG = False
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 # SECURITY WARNING: define the correct hosts in production!
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['.vercel.app']
 
 # Application definition
 INSTALLED_APPS = [
@@ -60,17 +60,25 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'ChatBot.wsgi.application'
 
-#
+# Database
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'Chatbot',
-        'USER': 'postgres',
-        'PASSWORD': 'civil hacker',
-        'HOST': 'localhost',
-        'PORT': '7070',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+#
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'Chatbot',
+#         'USER': 'postgres',
+#         'PASSWORD': 'civil hacker',
+#         'HOST': 'localhost',
+#         'PORT': '7070',
+#     }
+# }
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
